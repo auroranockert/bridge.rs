@@ -1,0 +1,115 @@
+grammar Type
+  rule type
+    i8 / i16 / i32 / i64 / u8 / u16 / u32 / u64 / f32 / f64 / bool / array / void / cstring / class_object / selector / object / bitfield / pointer / unknown / struct
+  end
+
+  rule i8
+    'c' <I8>
+  end
+
+  rule i16
+    's' <I16>
+  end
+
+  rule i32
+    ('i' / 'l') <I32>
+  end
+
+  rule i64
+    'q' <I64>
+  end
+
+  rule u8
+    'C' <U8>
+  end
+
+  rule u16
+    'S' <U16>
+  end
+
+  rule u32
+    ('I' / 'L') <U32>
+  end
+
+  rule u64
+    'Q' <U64>
+  end
+
+  rule f32
+    'f' <F32>
+  end
+
+  rule f64
+    'd' <F64>
+  end
+
+  rule bool
+    'B' <Bool>
+  end
+
+  rule array
+    '[' number type ']' <Array>
+  end
+
+  rule void
+    'v' <Void>
+  end
+
+  rule cstring
+    '*' <CString>
+  end
+
+  rule class_object
+    '#' <ClassObject>
+  end
+
+  rule selector
+    ':' <Selector>
+  end
+
+  rule object
+    '@' <Object>
+  end
+
+  rule bitfield
+    'b' number <Bitfield>
+  end
+
+  rule pointer
+    '^' type <Pointer>
+  end
+
+  rule unknown
+    '?' <Unknown>
+  end
+
+  rule struct
+    '{' string t:('=' members:struct_member*)? '}' <Struct>
+  end
+
+  rule struct_member
+    n:quoted_string? type <StructMember>
+  end
+
+  rule number
+    [1-9] [0-9]*
+  end
+
+  rule string
+    str:[a-zA-Z_]+ {
+      def to_s
+        str.text_value
+      end
+    }
+  end
+
+  rule quoted_string
+    '"' string '"' {
+      def to_s
+        string.to_s
+      end
+    }
+  end
+
+  # TODO: union
+end
